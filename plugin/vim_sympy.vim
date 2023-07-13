@@ -3,7 +3,7 @@ if !has('python3')
     finish
 endif
 
-python3 import vim_find_test.sympyRunner
-python3 sr = vim_find_test.sympyRunner.SympyRunner()
+python3 import vim_sympy.sympyRunner
+python3 sr = vim_sympy.sympyRunner.SympyRunner()
 
 command! FindTest python3 sr.compile()
