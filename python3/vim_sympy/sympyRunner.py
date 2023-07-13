@@ -58,11 +58,11 @@ class SympyRunner:
 
     def compile(self) -> None:
         buf = self._vim.current.buffer
-        latex_equation = self._get_selection(buf)
+        latex_equation = "\n".join(self._get_selection(buf))
 
         print(latex_equation)
         vim.command(f':echo "{latex_equation}"') 
-
+        
         equation = parse_latex(latex_equation)
 
         print(f"{latex_equation}:\t\t{equation}\n")
