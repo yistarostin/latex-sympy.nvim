@@ -66,7 +66,7 @@ class SympyRunner:
         equation = latex2latex(latex_equation)
 
         print(f"{latex_equation}:\t\t{equation}\n")
-        vim.command(f':normal i "{equation}"') 
+        vim.command(f':normal i \n{equation}') 
 
     def is_filetype_supported(self) -> bool:
         return self._vim.eval("&filetype") in ['tex', 'latex']
