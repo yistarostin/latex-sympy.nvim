@@ -1,5 +1,5 @@
 import sympy
-from sympy.parsing.latex import parse_latex
+from latex2sympy2 import latex2latex
 import time
 import pytest
 import os
@@ -63,7 +63,7 @@ class SympyRunner:
         print(latex_equation)
         vim.command(f':echo "{latex_equation}"') 
         
-        equation = parse_latex(latex_equation)
+        equation = latex2latex(latex_equation)
 
         print(f"{latex_equation}:\t\t{equation}\n")
         vim.command(f':echo "{equation}"') 
