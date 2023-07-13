@@ -6,4 +6,4 @@ endif
 python3 import vim_sympy.sympyRunner
 python3 sr = vim_sympy.sympyRunner.SympyRunner()
 
-command! FindTest python3 sr.compile()
+command! LatexSympy python3 sr.compile()
