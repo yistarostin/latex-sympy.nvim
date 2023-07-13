@@ -7,6 +7,7 @@ try:
     import pynvim as neovim
 except ImportError:
     import neovim
+import vim
 
 
 
@@ -41,8 +42,9 @@ def wait_for(func, cond=None, sleep=.001, tries=1000):
                 return res
         time.sleep(sleep)
     raise TimeoutError()
+# @neovim.plugin
 class SympyRunner:
-    def __init__(self, vim):
+    def __init__(self):
         self._vim = vim
     
     def _get_selection(self, buf):
