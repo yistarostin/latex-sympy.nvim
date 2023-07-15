@@ -3,10 +3,6 @@ from latex2sympy2 import latex2latex
 import time
 import pytest
 import os
-try:
-    import pynvim as neovim
-except ImportError:
-    import neovim
 import vim
 
 
