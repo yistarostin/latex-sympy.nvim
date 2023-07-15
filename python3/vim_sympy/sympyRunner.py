@@ -1,49 +1,14 @@
-import sympy
-from latex2sympy2 import latex2latex
-import time
-import pytest
-import os
+from typing import List
 import vim
+from latex2sympy2 import latex2latex
 
 
 
-#VIMRC = 'test/data/test.vimrc'
-SLEEP = 0.1
-
-
-@pytest.fixture(scope='session')
-def plugin_dir(tmpdir_factory):
-    return tmpdir_factory.mktemp('test_plugin')
-
-
-@pytest.fixture(scope='module', autouse=True)
-def register_plugin(plugin_dir):
-    os.environ['NVIM_RPLUGIN_MANIFEST'] = str(plugin_dir.join('rplugin.vim'))
-    #child_argv = ['nvim', '-u', VIMRC, '--embed', '--headless']
-    child_argv = ['nvim', '--embed', '--headless']
-    vim = neovim.attach('child', argv=child_argv)
-    vim.command('UpdateRemotePlugins')
-    vim.quit()
-    yield
-
-
-def wait_for(func, cond=None, sleep=.001, tries=1000):
-    for _ in range(tries):
-        res = func()
-        if cond is None:
-            if res:
-                return
-        else:
-            if cond(res):
-                return res
-        time.sleep(sleep)
-    raise TimeoutError()
-# @neovim.plugin
 class SympyRunner:
     def __init__(self):
         self._vim = vim
     
-    def _get_selection(self, buf):
+    def _get_selection(self, buf) -> List[str]:
         (lnum1, col1) = buf.mark('<')
         (lnum2, col2) = buf.mark('>')
         lines = self._vim.eval('getline({}, {})'.format(lnum1, lnum2))
@@ -53,16 +18,14 @@ class SympyRunner:
 
 
     def compile(self) -> None:
-        buf = self._vim.current.buffer
-        latex_equation = "\n".join(self._get_selection(buf))
+        try:
+            buf = self._vim.current.buffer
+            latex_equation = "\n".join(self._get_selection(buf))
 
-        print(latex_equation)
-        vim.command(f':echo "{latex_equation}"') 
-        
-        equation = latex2latex(latex_equation)
-
-        print(f"{latex_equation}:\t\t{equation}\n")
-        vim.command(f':normal a \n{equation}') 
+            equation = latex2latex(latex_equation)
+            vim.command(f':normal A \n{equation}') 
+        except:
+            print("Can't evaluate current selection")
 
     def is_filetype_supported(self) -> bool:
         return self._vim.eval("&filetype") in ['tex', 'latex']
